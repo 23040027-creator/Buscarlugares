@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+body {
+    background-color: #feefdd;
+    color: #000000;
+    min-height: 100vh;
+    padding: 40px;
+}
+
+h1 {
+    color: #000000;
+    margin-bottom: 24px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+/* Contenedor del buscador */
+body > div:first-of-type {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 520px;
+    margin-bottom: 32px;
+}
+
+#lugar {
+    flex: 1;
+    padding: 14px 18px;
+    background-color: #ffffff;
+    border: 3px solid #000000;
+    /* Esquinas cortadas en diagonal */
+    clip-path: polygon(12px 0%, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    font-size: 1rem;
+    font-weight: 500;
+    color: #000000;
+    outline: none;
+    box-shadow: 4px 4px 0px #000000;
+}
+
+#lugar:focus {
+    background-color: #fffbdf;
+}
+
+#search {
+    padding: 14px 24px;
+    background-color: #ff5964;
+    color: #ffffff;
+    border: 3px solid #000000;
+    /* Esquinas cortadas asimétricas */
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #000000;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+#search:hover {
+    background-color: #35a7ff;
+    color: #000000;
+}
+
+#search:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000000;
+}
+
+/* Contenedor de resultados */
+#resultados {
+    width: 100%;
+    max-width: 520px;
+}
+
+#resultados:has(h2) {
+    background-color: #ffffff;
+    padding: 24px;
+    border: 3px solid #000000;
+    /* Borde exterior cortado e invertido */
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    box-shadow: 6px 6px 0px #000000;
+}
+
+#resultados h2 {
+    color: #000000;
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    border-bottom: 3px solid #000000;
+    padding-bottom: 8px;
+}
+
+#resultados ul {
+    list-style: none;
+}
+
+#resultados li {
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    background-color: #f6f6f6;
+    border: 2px solid #000000;
+    color: #000000;
+    font-size: 0.95rem;
+    /* Biselado leve en cada elemento */
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+
+#resultados li:hover {
+    background-color: #ffe600;
+}
+
+#resultados li:last-child {
+    margin-bottom: 0;
+}
+
+#resultados li strong {
+    color: #ff5964;
+}
