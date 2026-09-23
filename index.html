@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,39 +9,67 @@
 <body>
     <h1>Buscador de lugares</h1>
     <div>
-         <input type="text" placeholder="buscar lugar" id="lugar">
+        <input type="text" placeholder="Buscar lugar..." id="lugar">
         <input type="submit" value="Buscar" id="search">
     </div>
     <div id="resultados"></div>
+
     <script>
-       const inputLugar = document.getElementById("lugar");
-       const botonBuscar = document.getElementById("search");
-       const resultados = document.getElementById("resultados");
+        const inputLugar = document.getElementById("lugar");
+        const botonBuscar = document.getElementById("search");
+        const resultados = document.getElementById("resultados");
         
-        async function buscarLugar(){
-         const lugar=inputLugar.value.trim();
-            if(!lugar){
-              resultados.innerHTML= `Ingresa nombre valido`;
+        async function buscarLugar() {
+            const lugar = inputLugar.value.trim();
+
+            if (!lugar) {
+                resultados.innerHTML = `<p style="color: red;">Por favor, ingresa un nombre válido.</p>`;
+                return; 
             }
-        
 
-            const respuesta = await fetch(
-           `https://geocoding-api.open-meteo.com/v1/search?name=${lugar}&count=1&language=es&format=json`
-            );
-            const data=await respuesta.json();
-            const ciudad=data.results[0];
-            resultados.innerHTML =`
-            <h2>${ciudad.name}</h2>
-            <ul>
-              <li>Pais:${ciudad.country}</li>   
-              <li>Estado:${ciudad.admin1}</li>
-              <li>Latitud:${ciudad.latitude}</li>
-              <li>Longitud:${ciudad.longitude}</li>
-            </ul>
+            resultados.innerHTML = `<p>Buscando información...</p>`;
 
-             `;
+            try {
+                const respuesta = await fetch(
+                    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(lugar)}&count=1&language=es&format=json`
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error("Error en la respuesta del servidor");
+                }
+
+                const data = await respuesta.json();
+
+                if (!data.results || data.results.length === 0) {
+                    resultados.innerHTML = `<p style="color: orange;">No se encontraron resultados para "${lugar}".</p>`;
+                    return;
+                }
+
+                const ciudad = data.results[0];
+
+                
+                resultados.innerHTML = `
+                    <h2>${ciudad.name}</h2>
+                    <ul>
+                        <li><strong>País:</strong> ${ciudad.country || 'No disponible'}</li>   
+                        <li><strong>Estado/Región:</strong> ${ciudad.admin1 || 'No disponible'}</li>
+                        <li><strong>Latitud:</strong> ${ciudad.latitude}</li>
+                        <li><strong>Longitud:</strong> ${ciudad.longitude}</li>
+                        <li><strong>Zona Horaria:</strong> ${ciudad.timezone || 'No disponible'}<
+                `;
+            } catch (error) {
+                
+                console.error("Error al buscar el lugar:", error);
+                resultados.innerHTML = `<p style="color: red;">Ocurrió un error al obtener la información. Inténtalo de nuevo más tarde.</p>`;
+            }
         }
-        botonBuscar.addEventListener("click", buscarLugar)
+
+        botonBuscar.addEventListener("click", buscarLugar);
+
+        
+        inputLugar.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") buscarLugar();
+        });
     </script>
 </body>
 </html>
